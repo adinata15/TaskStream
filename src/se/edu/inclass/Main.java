@@ -18,7 +18,7 @@ public class Main {
 
         System.out.println("Printing deadlines");
         printDeadlines(tasksData);
-
+//        printData(tasksData);
         System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
 
         for (Task t : filtreByString(tasksData, "10")) {
@@ -27,19 +27,21 @@ public class Main {
     }
 
     private static int countDeadlines(ArrayList<Task> tasksData) {
-        int count = 0;
-        for (Task t : tasksData) {
-            if (t instanceof Deadline) {
-                count++;
-            }
-        }
-        return count;
+        return (int) tasksData.stream()
+                .filter(task -> task instanceof Deadline)
+                .count();
+//        int count = 0;
+//        for (Task t : tasksData) {
+//            if (t instanceof Deadline) {
+//                count++;
+//            }
+//        }
+//        return count;
     }
 
     public static void printData(ArrayList<Task> tasksData) {
-        for (Task t : tasksData) {
-            System.out.println(t);
-        }
+        tasksData.stream()
+                .forEach(System.out::println);
     }
 
     public static void printDeadlines(ArrayList<Task> tasksData) {
