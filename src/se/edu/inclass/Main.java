@@ -1,12 +1,12 @@
 package se.edu.inclass;
 
+import static java.util.stream.Collectors.toList;
 import se.edu.inclass.data.DataManager;
 import se.edu.inclass.task.Deadline;
 import se.edu.inclass.task.Task;
 import se.edu.inclass.task.TaskNameComparator;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -21,6 +21,9 @@ public class Main {
 
         System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
 
+        for (Task t : filtreByString(tasksData, "10")) {
+            System.out.println(t);
+        }
     }
 
     private static int countDeadlines(ArrayList<Task> tasksData) {
@@ -40,10 +43,20 @@ public class Main {
     }
 
     public static void printDeadlines(ArrayList<Task> tasksData) {
-        for (Task t : tasksData) {
-            if (t instanceof Deadline) {
-                System.out.println(t);
-            }
-        }
+        tasksData.stream()
+                .filter(t -> t instanceof Deadline)
+                .sorted((a, b) -> a.getDescription().toLowerCase().compareTo(b.getDescription().toLowerCase()))
+                .forEach(System.out::println);
+//        for (Task t : tasksData) {
+//            if (t instanceof Deadline) {
+//                System.out.println(t);
+//            }
+//        }
+    }
+
+    public static ArrayList<Task> filtreByString(ArrayList<Task> tasksData, String filterString) {
+        return (ArrayList<Task>) tasksData.stream()
+                .filter(task -> task.getDescription().contains(filterString))
+                .collect(toList());
     }
 }
